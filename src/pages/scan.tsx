@@ -7,6 +7,8 @@ import { ScanForm } from '../components/scan-form';
 const scanScript = html`<script>
 (function() {
   const STATUS_MESSAGES = [
+    'Analyzing input quality...',
+    'Classifying input threat level...',
     'Initializing probe engine...',
     'Loading adversarial attack vectors...',
     'Testing prompt injection vectors...',

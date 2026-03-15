@@ -530,6 +530,126 @@ textarea:focus { outline: none; border-color: var(--text-muted); }
   font-size: 1.1rem;
 }
 
+/* ===== Input Quality Warnings ===== */
+.input-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+}
+
+.input-warning strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.input-warning p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.input-warning-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.input-warning-mild {
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.input-warning-mild strong {
+  color: var(--link);
+}
+
+.input-warning-strong {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.input-warning-strong strong {
+  color: var(--yellow);
+}
+
+/* ===== Input Threat Analysis ===== */
+.threat-card {
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius);
+}
+
+.threat-malicious {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.threat-suspicious {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.threat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.threat-icon {
+  font-size: 1.5rem;
+}
+
+.threat-header h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.threat-reasoning {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.threat-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.threat-categories {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.threat-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-family: var(--mono);
+  color: var(--text-muted);
+}
+
+.threat-confidence {
+  font-size: 0.82rem;
+  font-family: var(--mono);
+  color: var(--text-muted);
+}
+
+.badge-warn {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--yellow);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .hero-title { font-size: 2rem; }

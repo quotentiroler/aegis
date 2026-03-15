@@ -6,11 +6,11 @@ import { ReportPage } from './pages/report';
 import { VerifyPage } from './pages/verify';
 import { DashboardPage } from './pages/dashboard';
 import { AboutPage } from './pages/about';
-import { runSafetyChecks } from './lib/safety-checks';
+import { runSafetyChecks, analyzeInput } from './lib/safety-checks';
 import { calculateOverallScore } from './lib/scoring';
 import { generateDemoProof } from './lib/human-verify';
 import { globalErrorHandler, globalNotFoundHandler } from './lib/errors';
-import type { Category, ScanResult, ScanRow, AppEnv } from './lib/types';
+import type { Category, ScanResult, ScanRow, AppEnv, InputAnalysis } from './lib/types';
 import { ALL_CATEGORIES } from './lib/constants';
 
 const app = new Hono<AppEnv>();
@@ -28,6 +28,7 @@ function rowToScan(row: ScanRow): ScanResult {
     overallScore: row.overall_score,
     categories: JSON.parse(row.categories),
     results: JSON.parse(row.results),
+    inputAnalysis: row.input_analysis ? JSON.parse(row.input_analysis) as InputAnalysis : undefined,
     humanVerified: row.human_verified === 1,
     humanProof: row.human_proof ?? undefined,
     verifiedAt: row.verified_at ?? undefined,
@@ -107,7 +108,10 @@ app.post('/api/scan', async (c) => {
     const apiKey = c.env.OPENAI_API_KEY;
     if (!apiKey) return c.text('OPENAI_API_KEY not configured', 500);
 
-    // Run safety checks
+    // Analyze input quality + threat classification
+    const inputAnalysis = await analyzeInput(target, apiKey);
+
+    // Run safety checks (system prompt resilience probes)
     const results = await runSafetyChecks(target, categories, apiKey);
     const overallScore = calculateOverallScore(results);
 
@@ -116,10 +120,10 @@ app.post('/api/scan', async (c) => {
 
     // Store in D1
     await c.env.DB.prepare(
-      `INSERT INTO scans (id, target_type, target_value, overall_score, categories, results)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO scans (id, target_type, target_value, overall_score, categories, results, input_analysis)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
     )
-      .bind(id, 'prompt', target, overallScore, JSON.stringify(categories), JSON.stringify(results))
+      .bind(id, 'prompt', target, overallScore, JSON.stringify(categories), JSON.stringify(results), JSON.stringify(inputAnalysis))
       .run();
 
     // Return JSON for fetch requests, redirect for normal form POSTs

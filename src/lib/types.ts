@@ -4,6 +4,31 @@ export type Severity = 'low' | 'medium' | 'high' | 'critical';
 export type Category = 'prompt-injection' | 'jailbreak' | 'output-manipulation' | 'eval-gaming' | 'data-exfiltration';
 export type TargetType = 'prompt' | 'endpoint';
 
+// Prompt quality assessment (heuristic, no API calls)
+export type PromptQuality = 'rich' | 'minimal' | 'not-a-prompt';
+export interface PromptQualityInfo {
+  quality: PromptQuality;
+  charCount: number;
+  hasInstructions: boolean;
+  warning: string | null;
+}
+
+// Input threat classification (LLM-as-judge)
+export type ThreatLevel = 'benign' | 'suspicious' | 'malicious';
+export interface InputThreatAnalysis {
+  threatLevel: ThreatLevel;
+  isAttack: boolean;
+  categories: string[];
+  reasoning: string;
+  confidence: number; // 0-100
+}
+
+// Combined input analysis
+export interface InputAnalysis {
+  promptQuality: PromptQualityInfo;
+  threatScan: InputThreatAnalysis | null; // null if not run (rich prompt)
+}
+
 export interface CheckResult {
   category: Category;
   name: string;
@@ -21,6 +46,7 @@ export interface ScanResult {
   overallScore: number;
   categories: Category[];
   results: CheckResult[];
+  inputAnalysis?: InputAnalysis;
   humanVerified: boolean;
   humanProof?: string;
   verifiedAt?: string;
@@ -35,6 +61,7 @@ export interface ScanRow {
   overall_score: number;
   categories: string;   // JSON
   results: string;      // JSON
+  input_analysis: string | null; // JSON
   human_verified: number;
   human_proof: string | null;
   verified_at: string | null;

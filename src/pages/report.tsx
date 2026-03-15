@@ -69,6 +69,51 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
       </div>
     </section>
 
+    {/* Prompt quality warning */}
+    {scan.inputAnalysis?.promptQuality.warning && (
+      <section class="section">
+        <div class="container">
+          <div class={`input-warning ${scan.inputAnalysis.promptQuality.quality === 'not-a-prompt' ? 'input-warning-strong' : 'input-warning-mild'}`}>
+            <span class="input-warning-icon">{scan.inputAnalysis.promptQuality.quality === 'not-a-prompt' ? '⚠️' : 'ℹ️'}</span>
+            <div>
+              <strong>{scan.inputAnalysis.promptQuality.quality === 'not-a-prompt' ? 'Not a system prompt' : 'Low-complexity input'}</strong>
+              <p>{scan.inputAnalysis.promptQuality.warning}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* Input threat analysis — shown when the input looks like an attack */}
+    {scan.inputAnalysis?.threatScan && scan.inputAnalysis.threatScan.threatLevel !== 'benign' && (
+      <section class="section">
+        <div class="container">
+          <div class={`threat-card ${scan.inputAnalysis.threatScan.threatLevel === 'malicious' ? 'threat-malicious' : 'threat-suspicious'}`}>
+            <div class="threat-header">
+              <span class="threat-icon">{scan.inputAnalysis.threatScan.threatLevel === 'malicious' ? '🚨' : '🔍'}</span>
+              <h2>{scan.inputAnalysis.threatScan.threatLevel === 'malicious' ? 'Malicious Input Detected' : 'Suspicious Input Detected'}</h2>
+              <span class={`badge ${scan.inputAnalysis.threatScan.threatLevel === 'malicious' ? 'badge-fail' : 'badge-warn'}`}>
+                {scan.inputAnalysis.threatScan.threatLevel.toUpperCase()}
+              </span>
+            </div>
+            <p class="threat-reasoning">{scan.inputAnalysis.threatScan.reasoning}</p>
+            <div class="threat-meta">
+              <div class="threat-categories">
+                {scan.inputAnalysis.threatScan.categories.map((cat) => (
+                  <span class="threat-tag" key={cat}>{cat}</span>
+                ))}
+              </div>
+              <span class="threat-confidence">Confidence: {scan.inputAnalysis.threatScan.confidence}%</span>
+            </div>
+            <p class="text-muted text-sm" style="margin-top:0.8rem;">
+              This input was classified using LLM-as-Judge threat detection, grounded in UniGuardian's benign/poisoned classification methodology.
+              <em> (Lin et al., 2025 — arXiv:2502.13141)</em>
+            </p>
+          </div>
+        </div>
+      </section>
+    )}
+
     <section class="section">
       <div class="container">
         <h2>Findings</h2>
