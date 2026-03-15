@@ -37,12 +37,7 @@ export const ScanForm: FC = () => (
     {/* Loading state — hidden until JS activates it */}
     <div id="scan-loading" class="scan-loading" style="display:none">
       <div class="scan-loading-shield">
-        <svg viewBox="0 0 64 64" width="80" height="80" class="scan-shield-svg">
-          <path d="M32 4L8 16v16c0 14.4 10.2 27.8 24 32 13.8-4.2 24-17.6 24-32V16L32 4z"
-            fill="none" stroke="#E8733A" stroke-width="3" class="shield-path" />
-          <path d="M22 32l7 7 13-13" fill="none" stroke="#22c55e" stroke-width="3"
-            stroke-linecap="round" stroke-linejoin="round" class="check-path" />
-        </svg>
+        <img src="/icon/aegis-icon-transparent.svg" alt="AEGIS" width="80" height="80" class="scan-shield-icon" />
         <div class="scan-pulse-ring"></div>
       </div>
 
