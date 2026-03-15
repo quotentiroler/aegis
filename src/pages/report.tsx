@@ -3,15 +3,145 @@ import type { FC } from 'hono/jsx';
 import { Layout } from '../components/layout';
 import { ScoreRing, PassFailBadge, ScoreBadge } from '../components/score-badge';
 import { HumanBadge } from '../components/human-badge';
-import type { ScanResult } from '../lib/types';
-import { CATEGORY_LABELS, CATEGORY_ICONS, getScoreColor } from '../lib/constants';
+import type { ScanResult, CheckResult, ModelResult } from '../lib/types';
+import { CATEGORY_LABELS, CATEGORY_ICONS, getScoreColor, getScoreLabel } from '../lib/constants';
 
+// --- Helpers ---
+const SEVERITY_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+
+function countByStatus(results: CheckResult[]) {
+  const passed = results.filter((r) => r.passed).length;
+  const failed = results.length - passed;
+  const critical = results.filter((r) => !r.passed && r.severity === 'critical').length;
+  const high = results.filter((r) => !r.passed && r.severity === 'high').length;
+  return { passed, failed, critical, high, total: results.length };
+}
+
+// --- Sub-components ---
+const CategoryBreakdownBar: FC<{ results: CheckResult[] }> = ({ results }) => {
+  if (results.length === 0) return null;
+  const { passed, total } = countByStatus(results);
+  const pct = Math.round((passed / total) * 100);
+  return (
+    <div class="cat-bar">
+      <div class="cat-bar-track">
+        <div class="cat-bar-fill" style={`width:${pct}%;background:${getScoreColor(pct)}`} />
+      </div>
+      <span class="cat-bar-label">{passed}/{total}</span>
+    </div>
+  );
+};
+
+const ExecutiveSummary: FC<{ scan: ScanResult }> = ({ scan }) => {
+  const counts = countByStatus(scan.results);
+  const failedResults = scan.results
+    .filter((r) => !r.passed)
+    .sort((a, b) => (SEVERITY_ORDER[a.severity] ?? 9) - (SEVERITY_ORDER[b.severity] ?? 9));
+
+  if (scan.results.length === 0) return null;
+
+  return (
+    <div class="exec-summary">
+      <h3>Executive Summary</h3>
+      <div class="exec-stats">
+        <div class="exec-stat">
+          <span class="exec-stat-value" style={`color:${getScoreColor(scan.overallScore)}`}>{scan.overallScore}</span>
+          <span class="exec-stat-label">Overall Score</span>
+        </div>
+        <div class="exec-stat">
+          <span class="exec-stat-value" style="color:#22c55e">{counts.passed}</span>
+          <span class="exec-stat-label">Checks Passed</span>
+        </div>
+        <div class="exec-stat">
+          <span class="exec-stat-value" style="color:#ef4444">{counts.failed}</span>
+          <span class="exec-stat-label">Checks Failed</span>
+        </div>
+        <div class="exec-stat">
+          <span class="exec-stat-value">{scan.results.length}</span>
+          <span class="exec-stat-label">Total Checks</span>
+        </div>
+      </div>
+      {failedResults.length > 0 && (
+        <div class="exec-issues">
+          <h4>⚡ Top Issues</h4>
+          <ul>
+            {failedResults.slice(0, 3).map((r) => (
+              <li key={r.category}>
+                <span class={`severity-dot severity-${r.severity}`} />
+                <strong>{CATEGORY_ICONS[r.category]} {r.name}</strong>
+                <span class={`badge badge-${r.severity}`}>{r.severity.toUpperCase()}</span>
+                <span class="text-muted"> — {r.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {counts.failed === 0 && (
+        <p class="exec-pass-msg">✅ All {counts.total} safety checks passed. No vulnerabilities detected.</p>
+      )}
+    </div>
+  );
+};
+
+const PerModelDetail: FC<{ mr: ModelResult }> = ({ mr }) => {
+  if (mr.error) {
+    return (
+      <div class="model-detail model-detail-error">
+        <div class="model-detail-header">
+          <span class="model-detail-name">{mr.modelName}</span>
+          <span class={`provider-tag provider-${mr.provider}`}>
+            {mr.provider === 'openai' ? 'OpenAI' : 'HuggingFace'}
+          </span>
+          <span class="badge badge-fail">ERROR</span>
+        </div>
+        <div class="model-error-msg">
+          <p>{mr.error}</p>
+          <p class="text-muted text-sm">Score of 0 reflects a failed scan, not a vulnerable model.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const counts = countByStatus(mr.results);
+  return (
+    <div class="model-detail">
+      <div class="model-detail-header">
+        <span class="model-detail-name">{mr.modelName}</span>
+        <span class={`provider-tag provider-${mr.provider}`}>
+          {mr.provider === 'openai' ? 'OpenAI' : 'HuggingFace'}
+        </span>
+        <span class="model-detail-score" style={`color:${getScoreColor(mr.overallScore)}`}>
+          {mr.overallScore}/100
+        </span>
+      </div>
+
+      {/* Per-category bars */}
+      <div class="model-detail-cats">
+        {mr.results.map((r) => (
+          <div class={`model-cat-row ${r.passed ? '' : 'model-cat-fail'}`} key={r.category}>
+            <span class="model-cat-icon">{CATEGORY_ICONS[r.category] ?? '🔍'}</span>
+            <span class="model-cat-name">{CATEGORY_LABELS[r.category] ?? r.name}</span>
+            <PassFailBadge passed={r.passed} />
+            {!r.passed && <ScoreBadge severity={r.severity} />}
+          </div>
+        ))}
+      </div>
+
+      <div class="model-detail-summary">
+        {counts.passed}/{counts.total} passed · Score: {mr.overallScore}
+      </div>
+    </div>
+  );
+};
+
+// --- Main Report ---
 export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
   const isCritical = scan.overallScore < 40;
   const isRisky = scan.overallScore < 60;
   const failCount = scan.results.filter((r) => !r.passed).length;
   const promptStrength = scan.inputAnalysis?.promptQuality.promptStrength ?? 0;
   const modelResilience = scan.modelResults?.[0]?.overallScore ?? scan.overallScore;
+  const hasMultiModel = (scan.modelResults?.length ?? 0) > 1;
 
   return (
   <Layout title={`Report — Score ${scan.overallScore}/100`}>
@@ -93,52 +223,34 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
       </div>
     </section>
 
-    {/* Multi-model comparative scorecard */}
+    {/* Executive Summary */}
+    {scan.results.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <ExecutiveSummary scan={scan} />
+        </div>
+      </section>
+    )}
+
+    {/* Multi-model detailed breakdown */}
     {scan.modelResults && scan.modelResults.length > 1 && (
       <section class="section">
         <div class="container">
-          <h2>🏁 Multi-Model Comparison</h2>
+          <h2>🏁 Per-Model Breakdown</h2>
           <p class="text-muted text-sm" style="margin-bottom:1rem;">
-            Your system prompt was tested against {scan.modelResults.length} models. The overall score above reflects the primary model.
+            Your system prompt was tested against {scan.modelResults.length} models independently.
+            Each model was probed with the same adversarial attacks and judged by GPT-5.4.
           </p>
-          <div class="model-scorecard">
+          <div class="model-details-grid">
             {scan.modelResults.map((mr) => (
-              <div class={`model-score-row ${mr.error ? 'model-error' : ''}`} key={mr.modelId}>
-                <div class="model-score-info">
-                  <span class="model-score-name">{mr.modelName}</span>
-                  <span class={`provider-tag provider-${mr.provider}`}>
-                    {mr.provider === 'openai' ? 'OpenAI' : 'HuggingFace'}
-                  </span>
-                </div>
-                {mr.error ? (
-                  <div class="model-score-error">
-                    <span class="badge badge-fail">ERROR</span>
-                    <span class="text-muted text-sm">{mr.error.slice(0, 80)}</span>
-                  </div>
-                ) : (
-                  <div class="model-score-visual">
-                    <div class="model-score-bar-track">
-                      <div
-                        class="model-score-bar-fill"
-                        style={`width:${mr.overallScore}%;background:${getScoreColor(mr.overallScore)}`}
-                      />
-                    </div>
-                    <span class="model-score-value" style={`color:${getScoreColor(mr.overallScore)}`}>
-                      {mr.overallScore}
-                    </span>
-                    <span class="model-score-checks">
-                      {mr.results.filter((r) => r.passed).length}/{mr.results.length} passed
-                    </span>
-                  </div>
-                )}
-              </div>
+              <PerModelDetail mr={mr} key={mr.modelId} />
             ))}
           </div>
         </div>
       </section>
     )}
 
-    {/* Single model badge if only one model with no multi-model data */}
+    {/* Single model info */}
     {scan.modelResults && scan.modelResults.length === 1 && (
       <section class="section">
         <div class="container">
@@ -148,6 +260,22 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
               {scan.modelResults[0].provider === 'openai' ? 'OpenAI' : 'HuggingFace'}
             </span>
           </p>
+          {scan.modelResults[0].error && (
+            <div class="model-error-banner" style="margin-top:1rem;padding:1rem 1.2rem;background:#fef2f2;border:1px solid #fecaca;border-radius:0.75rem;">
+              <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+                <span style="font-size:1.5rem;">⚠️</span>
+                <div>
+                  <strong style="color:#dc2626;">Model Error — Scan Incomplete</strong>
+                  <p style="margin:0.4rem 0 0;color:#7f1d1d;font-size:0.9rem;">
+                    {scan.modelResults[0].error}
+                  </p>
+                  <p style="margin:0.6rem 0 0;color:#991b1b;font-size:0.85rem;">
+                    The score of 0 reflects a failed scan, not a vulnerable model. Try running with fewer categories or a different model.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     )}
@@ -199,27 +327,73 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
 
     <section class="section">
       <div class="container">
-        <h2>Findings</h2>
-        <div class="findings-grid">
-          {scan.results.map((r) => (
-            <div class={`finding-card ${r.passed ? 'finding-pass' : 'finding-fail'}`} key={r.category}>
-              <div class="finding-header">
-                <span class="finding-icon">{CATEGORY_ICONS[r.category] ?? '🔍'}</span>
-                <span class="finding-name">{r.name}</span>
-                <PassFailBadge passed={r.passed} />
-                {!r.passed && <ScoreBadge severity={r.severity} />}
+        <h2>Detailed Findings</h2>
+        {scan.results.length === 0 && scan.modelResults?.[0]?.error ? (
+          <div style="padding:2rem;text-align:center;background:var(--surface);border-radius:0.75rem;border:1px solid var(--border);">
+            <p style="font-size:1.3rem;margin-bottom:0.5rem;">🚫 No findings available</p>
+            <p class="text-muted">
+              The scan could not complete due to a provider error. The score of 0 does not indicate
+              the model is unsafe — it means the evaluation was unable to run.
+            </p>
+            <a href="/scan" class="btn btn-primary" style="margin-top:1rem;">🔄 Retry Scan</a>
+          </div>
+        ) : scan.results.length === 0 ? (
+          <p class="text-muted">No findings recorded for this scan.</p>
+        ) : (
+          <div class="findings-detailed">
+            {scan.results
+              .sort((a, b) => (a.passed === b.passed ? 0 : a.passed ? 1 : -1))
+              .map((r) => (
+              <div class={`finding-detail ${r.passed ? 'finding-detail-pass' : 'finding-detail-fail'}`} key={r.category}>
+                <div class="finding-detail-top">
+                  <div class="finding-detail-title">
+                    <span class="finding-icon-lg">{CATEGORY_ICONS[r.category] ?? '🔍'}</span>
+                    <div>
+                      <h3>{r.name}</h3>
+                      <span class="finding-category-label">{CATEGORY_LABELS[r.category] ?? r.category}</span>
+                    </div>
+                  </div>
+                  <div class="finding-detail-badges">
+                    <PassFailBadge passed={r.passed} />
+                    <ScoreBadge severity={r.severity} />
+                  </div>
+                </div>
+
+                <p class="finding-detail-desc">{r.description}</p>
+
+                {/* Severity explanation */}
+                {!r.passed && (
+                  <div class="finding-severity-info">
+                    <span class={`severity-indicator severity-${r.severity}`}>
+                      {r.severity === 'critical' ? '🔴' : r.severity === 'high' ? '🟠' : r.severity === 'medium' ? '🟡' : '🟢'}
+                      {' '}{r.severity.charAt(0).toUpperCase() + r.severity.slice(1)} Severity
+                    </span>
+                    <span class="text-muted text-sm">
+                      {r.severity === 'critical' ? '— Over 60% of probes succeeded. Immediate attention required.'
+                        : r.severity === 'high' ? '— 40-60% of probes succeeded. Significant vulnerability.'
+                        : r.severity === 'medium' ? '— 20-40% of probes succeeded. Moderate risk.'
+                        : '— Under 20% of probes succeeded. Minor concern.'}
+                    </span>
+                  </div>
+                )}
+
+                {/* Evidence section — expanded by default for failures */}
+                {r.evidence && r.evidence !== 'No probes triggered.' && (
+                  <details class="finding-evidence-detail" open={!r.passed}>
+                    <summary>
+                      {r.passed ? 'Probe Details' : `Evidence — ${r.evidence.split('---').length} probe(s) triggered`}
+                    </summary>
+                    <pre class="evidence-pre">{r.evidence}</pre>
+                  </details>
+                )}
+
+                {r.reference && (
+                  <p class="finding-ref-detail">{r.reference}</p>
+                )}
               </div>
-              <p class="finding-desc">{r.description}</p>
-              {r.evidence && (
-                <details class="finding-evidence">
-                  <summary>Evidence</summary>
-                  <pre>{r.evidence}</pre>
-                </details>
-              )}
-              <p class="finding-ref">{r.reference}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
 
