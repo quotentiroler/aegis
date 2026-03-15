@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "db:init": "wrangler d1 execute aegis-db --local --file=./schema.sql"
+    "db:init": "wrangler d1 execute aegis-db --local --file=./schema.sql",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/scoring.test.ts tests/constants.test.ts tests/prompt-quality.test.ts",
+    "test:integration": "vitest run tests/hf-models.integration.test.ts",
+    "test:watch": "vitest",
+    "predeploy": "bun run test"
   },
   "dependencies": {
     "@huggingface/inference": "^4.13.15",
@@ -15,7 +20,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260313.1",
-    "wrangler": "^4.73.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0",
+    "wrangler": "^4.73.0"
   }
 }

@@ -16,7 +16,7 @@ export const ALL_CATEGORIES: Category[] = [
 // --- Target models available for testing ---
 export const TARGET_MODELS: ModelConfig[] = [
   { id: 'gpt-5-mini', name: 'GPT-5 Mini', provider: 'openai', icon: '🟢' },
-  { id: 'meta-llama/Llama-3.1-8B-Instruct', name: 'Llama 3.1 8B', provider: 'huggingface', icon: '🦙' },
+  { id: 'meta-llama/Llama-3.3-70B-Instruct', name: 'Llama 3.3 70B', provider: 'huggingface', icon: '🦙' },
   { id: 'deepseek-ai/DeepSeek-V3.2', name: 'DeepSeek V3.2', provider: 'huggingface', icon: '🐋' },
   { id: 'Qwen/Qwen2.5-72B-Instruct', name: 'Qwen 2.5 72B', provider: 'huggingface', icon: '🐼' },
   { id: 'Qwen/Qwen2.5-Coder-32B-Instruct', name: 'Qwen 2.5 Coder 32B', provider: 'huggingface', icon: '💻' },
