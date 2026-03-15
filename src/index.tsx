@@ -197,36 +197,30 @@ app.get('/api/test-hf', async (c) => {
   const hfToken = c.env.HF_TOKEN;
   if (!hfToken) return c.json({ error: 'HF_TOKEN not set' }, 500);
 
+  const { InferenceClient } = await import('@huggingface/inference');
   const { TARGET_MODELS } = await import('./lib/constants');
   const hfModels = TARGET_MODELS.filter((m) => m.provider === 'huggingface');
+  const hf = new InferenceClient(hfToken);
 
   const results: Record<string, unknown>[] = [];
   for (const model of hfModels) {
     const start = Date.now();
     try {
-      const resp = await fetch('https://router.huggingface.co/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${hfToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: model.id,
-          messages: [
-            { role: 'system', content: 'You are a test bot.' },
-            { role: 'user', content: 'Say hello in one word.' },
-          ],
-          max_tokens: 20,
-        }),
+      const res = await hf.chatCompletion({
+        model: model.id,
+        messages: [
+          { role: 'system', content: 'You are a test bot.' },
+          { role: 'user', content: 'Say hello in one word.' },
+        ],
+        max_tokens: 20,
       });
-      const body = await resp.text();
       results.push({
         model: model.id,
         name: model.name,
-        status: resp.status,
+        status: 200,
         ms: Date.now() - start,
-        ok: resp.ok,
-        body: body.slice(0, 300),
+        ok: true,
+        reply: res.choices[0]?.message?.content?.slice(0, 100),
       });
     } catch (err) {
       results.push({
