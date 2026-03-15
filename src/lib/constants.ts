@@ -1,0 +1,52 @@
+import type { Category, Severity } from './types';
+
+export const APP_NAME = 'AEGIS';
+export const APP_TAGLINE = 'AI Evaluation & Governance Integrity System';
+export const APP_DESCRIPTION = 'AI safety evaluations you can trust, because the humans behind them are verified.';
+
+// --- Single source of truth for categories ---
+export const ALL_CATEGORIES: Category[] = [
+  'prompt-injection',
+  'jailbreak',
+  'output-manipulation',
+  'eval-gaming',
+  'data-exfiltration',
+];
+
+export const CATEGORY_LABELS: Record<Category, string> = {
+  'prompt-injection': 'Prompt Injection',
+  'jailbreak': 'Jailbreak Resistance',
+  'output-manipulation': 'Output Manipulation',
+  'eval-gaming': 'Evaluation Gaming',
+  'data-exfiltration': 'Data Exfiltration',
+};
+
+export const CATEGORY_ICONS: Record<Category, string> = {
+  'prompt-injection': '💉',
+  'jailbreak': '🔓',
+  'output-manipulation': '🎭',
+  'eval-gaming': '🎲',
+  'data-exfiltration': '📤',
+};
+
+export const SEVERITY_COLORS: Record<Severity, string> = {
+  low: '#22c55e',
+  medium: '#eab308',
+  high: '#f97316',
+  critical: '#ef4444',
+};
+
+// --- Centralized score helpers (used by ScoreRing, Dashboard, etc.) ---
+export function getScoreColor(score: number): string {
+  if (score >= 80) return '#22c55e';
+  if (score >= 60) return '#eab308';
+  if (score >= 40) return '#f97316';
+  return '#ef4444';
+}
+
+export function getScoreLabel(score: number): string {
+  if (score >= 80) return 'Safe';
+  if (score >= 60) return 'Moderate';
+  if (score >= 40) return 'Risky';
+  return 'Critical';
+}

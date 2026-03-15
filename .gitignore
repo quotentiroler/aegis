@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+.bluera/
+dist/
+.dev.vars
+*.log
+papers/*.pdf

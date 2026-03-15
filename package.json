@@ -1,0 +1,20 @@
+{
+  "name": "aegis",
+  "version": "1.0.0",
+  "description": "AEGIS — AI Evaluation & Governance Integrity System",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute aegis-db --local --file=./schema.sql"
+  },
+  "dependencies": {
+    "hono": "^4.12.8",
+    "openai": "^6.29.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260313.1",
+    "wrangler": "^4.73.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512"
+     width="512"
+     height="512">
+<path d="M256 36 L462 148 L462 328 Q462 454 256 490 Q50 454 50 328 L50 148 Z" fill="#16213E"/>
+<path d="M256 36 L462 148 L462 328 Q462 454 256 490 Q50 454 50 328 L50 148 Z" fill="none" stroke="#FF6B35" stroke-width="8"/>
+<path d="M256 120 L256 420" stroke="#FF6B35" stroke-width="10" stroke-linecap="round"/>
+<path d="M256 120 L160 215" stroke="#FF6B35" stroke-width="10" stroke-linecap="round"/>
+<path d="M256 120 L352 215" stroke="#FF6B35" stroke-width="10" stroke-linecap="round"/>
+<path d="M160 215 L256 290" stroke="#FF6B35" stroke-width="7" opacity="0.65" stroke-linecap="round"/>
+<path d="M352 215 L256 290" stroke="#FF6B35" stroke-width="7" opacity="0.65" stroke-linecap="round"/>
+<circle cx="256" cy="120" r="16" fill="#FF6B35"/>
+<circle cx="160" cy="215" r="12" fill="#FF6B35" opacity="0.8"/>
+<circle cx="352" cy="215" r="12" fill="#FF6B35" opacity="0.8"/>
+<circle cx="256" cy="290" r="11" fill="#FF6B35" opacity="0.6"/>
+<circle cx="256" cy="420" r="10" fill="#FF6B35" opacity="0.5"/>
+</svg>

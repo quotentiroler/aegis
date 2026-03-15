@@ -1,0 +1,15 @@
+{
+  "name": "aegis",
+  "main": "src/index.tsx",
+  "compatibility_date": "2025-03-10",
+  "assets": {
+    "directory": "public"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "aegis-db",
+      "database_id": "13700296-c2a5-44a2-a3a8-f6b92b29e91e"
+    }
+  ]
+}

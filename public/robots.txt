@@ -1,0 +1,38 @@
+# AEGIS — AI Evaluation & Governance Integrity System
+# https://aegis.dev
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# AI Crawlers — welcome
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+
+User-agent: Cohere-ai
+Allow: /
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://aegis.dev/sitemap.xml

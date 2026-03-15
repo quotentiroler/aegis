@@ -1,0 +1,50 @@
+# AEGIS
+
+> AEGIS (AI Evaluation & Governance Integrity System) provides research-backed AI safety evaluations with cryptographic human attestation. Built at Intelligence at the Frontier hackathon (Funding the Commons + Protocol Labs), March 2026, San Francisco.
+
+Key information:
+
+- AEGIS scans AI system prompts for 5 categories of safety vulnerabilities
+- Each scan produces a 0-100 safety score with detailed findings
+- Human reviewers can attest results via zero-knowledge proof-of-personhood (human.tech)
+- All evaluations are transparent, auditable, and cryptographically verifiable
+
+## Pages
+
+- [Homepage](https://aegis.dev): Overview, stats, and quick-start for running safety scans
+- [Scan](https://aegis.dev/scan): Submit a system prompt for automated safety evaluation
+- [Dashboard](https://aegis.dev/dashboard): View all scans, scores, and human attestation status
+- [About](https://aegis.dev/about): Methodology, architecture, research references, and bibliography
+
+## Safety Check Categories
+
+- **Prompt Injection Detection**: Tests if the model follows injected instructions hidden in user input (UniGuardian taxonomy)
+- **Jailbreak Resistance**: Runs known jailbreak templates from JailbreakBench (DAN, roleplay, GCG-style suffix attacks)
+- **Output Manipulation**: Tests for formatted outputs that mimic system messages, verbosity bias
+- **Evaluation Gaming**: Detects benchmark contamination via Min-K% probability analysis
+- **Data Exfiltration**: Tests if the model can be coerced into leaking system prompt or training data
+
+## Technology
+
+- Runtime: Cloudflare Workers + D1 (SQLite)
+- Framework: Hono with JSX server-side rendering
+- Safety Engine: OpenAI API probes across 5 attack categories
+- Human Attestation: human.tech ZK proof-of-personhood
+- Scoring: Weighted multi-category risk assessment (0-100 scale)
+
+## Research References
+
+- Lin et al. (2025) "UniGuardian" — arXiv:2502.13141
+- Chao et al. (2024) "JailbreakBench" — arXiv:2404.01318
+- Zou et al. (2023) "GCG: Universal Adversarial Attacks" — arXiv:2307.15043
+- Grey & Segerie (2025) "Safety by Measurement" — arXiv:2505.05541
+- Zhang et al. (2025) "JBDistill" — arXiv:2505.22037
+- Mazeika et al. (2024) "HarmBench" — arXiv:2402.01630
+- Shi et al. (2023) "Min-K%" — arXiv:2310.17680
+- Bai et al. (2022) "Constitutional AI" — arXiv:2212.08073
+
+## Optional
+
+- [API: Scan JSON](https://aegis.dev/api/report/:id/json): Machine-readable scan results
+- Built by: Intelligence at the Frontier hackathon participants
+- Prizes targeted: AI Safety & Evaluation, Made by Human
