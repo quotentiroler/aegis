@@ -183,6 +183,7 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
                 <tr>
                   <th>Date</th>
                   <th>Target</th>
+                  <th>Models</th>
                   <th>Score</th>
                   <th>Rating</th>
                   <th>Checks</th>
@@ -195,11 +196,25 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
                   const color = getScoreColor(s.overallScore);
                   const label = getScoreLabel(s.overallScore);
                   const failed = s.results.filter((r) => !r.passed).length;
+                  const models = s.modelResults ?? [];
                   return (
                     <tr key={s.id}>
                       <td class="text-sm">{new Date(s.createdAt).toLocaleDateString()}</td>
                       <td class="text-sm mono" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                         {s.targetValue.slice(0, 50)}
+                      </td>
+                      <td class="text-sm">
+                        {models.length > 0 ? (
+                          <span style="display:flex;flex-wrap:wrap;gap:0.25rem;">
+                            {models.map((m) => (
+                              <span key={m.modelId} class={`provider-tag provider-${m.provider}`} style="font-size:0.7rem;">
+                                {m.modelName}
+                              </span>
+                            ))}
+                          </span>
+                        ) : (
+                          <span class="text-muted">—</span>
+                        )}
                       </td>
                       <td>
                         <span style={`color:${color};font-weight:700;font-size:1.1rem;`}>{s.overallScore}</span>
