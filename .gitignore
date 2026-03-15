@@ -1,6 +1,7 @@
 node_modules/
 .wrangler/
 .bluera/
+.vscode/
 dist/
 .dev.vars
 *.log

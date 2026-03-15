@@ -125,13 +125,10 @@ AEGIS integrates [human.tech](https://human.tech)'s ZK proof-of-personhood proto
 - NIST (2023). "AI Risk Management Framework (AI RMF 1.0)." _NIST.AI.100-1_
 - European Parliament (2024). "EU AI Act." _Regulation 2024/1689_
 
-## Target Prizes
+## Target Tracks
 
-| Track | Prize |
-|-------|-------|
-| 🛡️ AI Safety & Evaluation (Protocol Labs) | $1,200 + Hello Tomorrow Demo Day |
-| 🌸 BONUS: Made by Human (human.tech) | $1,200 |
-| **Total** | **$2,400 + Demo Day invite** |
+- 🛡️ **AI Safety & Evaluation** (Protocol Labs)
+- 🌸 **Made by Human** (human.tech)
 
 ## License
 

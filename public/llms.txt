@@ -47,4 +47,4 @@ Key information:
 
 - [API: Scan JSON](https://aegis.dev/api/report/:id/json): Machine-readable scan results
 - Built by: Intelligence at the Frontier hackathon participants
-- Prizes targeted: AI Safety & Evaluation, Made by Human
+- Tracks targeted: AI Safety & Evaluation, Made by Human

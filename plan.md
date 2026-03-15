@@ -14,13 +14,10 @@ AI safety evaluations are only trustworthy if you can prove **who** ran them and
 
 ---
 
-## Target Prizes
+## Target Tracks
 
-| Track | Prize | Requirements |
-|-------|-------|-------------|
-| 🛡️ AI Safety — New project winner | $1,200 USD + Hello Tomorrow Demo Day | summary, github, demo, documentation |
-| 🌸 BONUS: Made by Human — New project | $1,200 USD | summary, demo, documentation |
-| **Total potential** | **$2,400 + Demo Day invite** | |
+- 🛡️ **AI Safety & Evaluation** (Protocol Labs) — summary, github, demo, documentation
+- 🌸 **Made by Human** (human.tech) — summary, demo, documentation
 
 ---
 
