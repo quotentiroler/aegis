@@ -17,9 +17,9 @@ export const ALL_CATEGORIES: Category[] = [
 export const TARGET_MODELS: ModelConfig[] = [
   { id: 'gpt-5-mini', name: 'GPT-5 Mini', provider: 'openai', icon: '🟢' },
   { id: 'meta-llama/Llama-3.1-8B-Instruct', name: 'Llama 3.1 8B', provider: 'huggingface', icon: '🦙' },
-  { id: 'mistralai/Mistral-Nemo-Instruct-2407', name: 'Mistral Nemo 12B', provider: 'huggingface', icon: '🌀' },
+  { id: 'deepseek-ai/DeepSeek-V3.2', name: 'DeepSeek V3.2', provider: 'huggingface', icon: '🐋' },
   { id: 'Qwen/Qwen2.5-72B-Instruct', name: 'Qwen 2.5 72B', provider: 'huggingface', icon: '🐼' },
-  { id: 'microsoft/Phi-4-mini-instruct', name: 'Phi-4 Mini', provider: 'huggingface', icon: 'Φ' },
+  { id: 'Qwen/Qwen2.5-Coder-32B-Instruct', name: 'Qwen 2.5 Coder 32B', provider: 'huggingface', icon: '💻' },
 ];
 
 export const DEFAULT_MODEL_IDS = ['gpt-5-mini'];
