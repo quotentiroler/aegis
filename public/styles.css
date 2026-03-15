@@ -771,3 +771,57 @@ textarea:focus { outline: none; border-color: var(--text-muted); }
     width: 100%;
   }
 }
+
+/* ==================== Dual Score Strip ==================== */
+.dual-score-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border, #2a2a4a);
+}
+
+.dual-score-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dual-score-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dual-score-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.dual-score-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dual-score-label {
+  font-size: 0.82rem;
+  color: var(--text-muted, #888);
+  font-weight: 500;
+}
+
+.dual-score-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+@media (max-width: 500px) {
+  .dual-score-strip {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

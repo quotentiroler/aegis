@@ -10,6 +10,7 @@ export interface PromptQualityInfo {
   quality: PromptQuality;
   charCount: number;
   hasInstructions: boolean;
+  promptStrength: number; // 0-100 heuristic score
   warning: string | null;
 }
 

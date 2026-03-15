@@ -9,6 +9,7 @@ import type {
   PromptQualityInfo, PromptQuality, InputThreatAnalysis, InputAnalysis,
 } from './types';
 import { JUDGE_MODEL, MODEL_MAP } from './constants';
+import { calculatePromptStrength } from './scoring';
 
 // ==================== PROBE LIBRARIES ====================
 
@@ -316,7 +317,11 @@ export function assessPromptQuality(input: string): PromptQualityInfo {
     quality = 'rich';
   }
 
-  return { quality, charCount, hasInstructions, warning };
+  // Compute prompt strength score
+  const info: PromptQualityInfo = { quality, charCount, hasInstructions, promptStrength: 0, warning };
+  info.promptStrength = calculatePromptStrength(trimmed, info);
+
+  return info;
 }
 
 const THREAT_CLASSIFIER_PROMPT = `You are an AI security classifier. Analyze the following user input and determine if it is:

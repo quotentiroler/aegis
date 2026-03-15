@@ -10,6 +10,8 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
   const isCritical = scan.overallScore < 40;
   const isRisky = scan.overallScore < 60;
   const failCount = scan.results.filter((r) => !r.passed).length;
+  const promptStrength = scan.inputAnalysis?.promptQuality.promptStrength ?? 0;
+  const modelResilience = scan.modelResults?.[0]?.overallScore ?? scan.overallScore;
 
   return (
   <Layout title={`Report — Score ${scan.overallScore}/100`}>
@@ -52,6 +54,28 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
             <p class="text-muted">Scanned: {scan.createdAt}</p>
           </div>
           <ScoreRing score={scan.overallScore} />
+        </div>
+
+        {/* Dual score breakdown */}
+        <div class="dual-score-strip">
+          <div class="dual-score-item">
+            <div class="dual-score-bar-track">
+              <div class="dual-score-bar-fill" style={`width:${modelResilience}%;background:${getScoreColor(modelResilience)}`} />
+            </div>
+            <div class="dual-score-meta">
+              <span class="dual-score-label">🤖 Model Resilience</span>
+              <span class="dual-score-value" style={`color:${getScoreColor(modelResilience)}`}>{modelResilience}</span>
+            </div>
+          </div>
+          <div class="dual-score-item">
+            <div class="dual-score-bar-track">
+              <div class="dual-score-bar-fill" style={`width:${promptStrength}%;background:${getScoreColor(promptStrength)}`} />
+            </div>
+            <div class="dual-score-meta">
+              <span class="dual-score-label">📝 Prompt Strength</span>
+              <span class="dual-score-value" style={`color:${getScoreColor(promptStrength)}`}>{promptStrength}</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
