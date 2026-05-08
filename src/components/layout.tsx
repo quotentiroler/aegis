@@ -99,7 +99,7 @@ export const Layout: FC<PropsWithChildren<{ title?: string; description?: string
               <strong>{APP_NAME}</strong> — {APP_TAGLINE}
             </p>
             <p class="footer-sub">
-              Built at <em>Intelligence at the Frontier</em> · Funding the Commons + Protocol Labs · March 2026
+              Built at <em>Intelligence at the Frontier</em> · San Francisco · March 2026
             </p>
             <p class="footer-sub">
               Research-backed evaluations across multiple LLMs
