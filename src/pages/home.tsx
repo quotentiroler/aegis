@@ -9,7 +9,7 @@ export const HomePage: FC<{ totalScans: number; threats: number }> = ({
   <Layout>
     <section class="hero">
       <div class="container">
-        <div class="hero-badge">🛡️ Research-Backed AI Safety</div>
+        <img src="/logo/aegis-logo-white.png" alt="AEGIS" style="height:72px;width:auto;margin-bottom:1.5rem;display:block;margin-left:auto;margin-right:auto;" />
         <h1 class="hero-title">
           AI Safety Evaluations,<br />
           <span class="gradient-text">Built on Research</span>
