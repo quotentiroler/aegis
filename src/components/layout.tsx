@@ -14,7 +14,7 @@ const jsonLdOrg = {
   operatingSystem: 'Cross-platform',
   url: SITE_URL,
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-  keywords: ['AI safety', 'prompt injection', 'jailbreak detection', 'human attestation', 'LLM evaluation'],
+  keywords: ['AI safety', 'prompt injection', 'jailbreak detection', 'LLM evaluation'],
 };
 
 const jsonLdWebsite = {
@@ -30,7 +30,7 @@ export const Layout: FC<PropsWithChildren<{ title?: string; description?: string
   path,
   children,
 }) => {
-  const pageTitle = title ? `${title} — ${APP_NAME}` : `${APP_NAME} — AI Safety Evaluations, Verified by Humans`;
+  const pageTitle = title ? `${title} — ${APP_NAME}` : `${APP_NAME} — AI Safety Evaluations, Research-Backed`;
   const pageDesc = description ?? APP_DESCRIPTION;
   const canonicalUrl = path ? `${SITE_URL}${path}` : SITE_URL;
 
@@ -43,7 +43,7 @@ export const Layout: FC<PropsWithChildren<{ title?: string; description?: string
 
         {/* SEO */}
         <meta name="description" content={pageDesc} />
-        <meta name="keywords" content="AI safety, prompt injection, jailbreak detection, LLM evaluation, human attestation, AI governance, zero-knowledge proof" />
+        <meta name="keywords" content="AI safety, prompt injection, jailbreak detection, LLM evaluation, AI governance" />
         <meta name="author" content="AEGIS" />
         <meta name="robots" content="index, follow" />
         <meta name="category" content="technology" />
@@ -102,7 +102,7 @@ export const Layout: FC<PropsWithChildren<{ title?: string; description?: string
               Built at <em>Intelligence at the Frontier</em> · Funding the Commons + Protocol Labs · March 2026
             </p>
             <p class="footer-sub">
-              Research-backed evaluations · Human-verified attestations via <a href="https://human.tech" target="_blank" rel="noopener">human.tech</a>
+              Research-backed evaluations across multiple LLMs
             </p>
           </div>
         </footer>

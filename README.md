@@ -4,7 +4,7 @@
 
 🔗 **Live Demo: [aegis.maxivities.workers.dev](https://aegis.maxivities.workers.dev/)**
 
-**Built at [Intelligence at the Frontier](https://fundingthecommons.io/) — Funding the Commons + Protocol Labs — March 2026, San Francisco**
+**Presented at [Intelligence at the Frontier](https://fundingthecommons.io/) — Funding the Commons + Protocol Labs — March 2026, San Francisco**
 
 ---
 

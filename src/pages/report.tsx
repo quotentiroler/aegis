@@ -2,7 +2,6 @@
 import type { FC } from 'hono/jsx';
 import { Layout } from '../components/layout';
 import { ScoreRing, PassFailBadge, ScoreBadge } from '../components/score-badge';
-import { HumanBadge } from '../components/human-badge';
 import type { ScanResult, CheckResult, ModelResult } from '../lib/types';
 import { CATEGORY_LABELS, CATEGORY_ICONS, getScoreColor, getScoreLabel } from '../lib/constants';
 
@@ -159,35 +158,6 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
 
   return (
   <Layout title={hasMultiModel ? `Multi-Model Report — AEGIS` : `Report — Score ${singleModelScore}/100`}>
-    {/* Attestation nudge banner */}
-    {!scan.humanVerified && (
-      <div class={`attest-banner ${isCritical ? 'attest-critical' : isRisky ? 'attest-risky' : 'attest-default'}`}>
-        <div class="container">
-          <div class="attest-banner-inner">
-            <div class="attest-banner-content">
-              <span class="attest-banner-icon">{isCritical ? '🚨' : isRisky ? '⚠️' : '👤'}</span>
-              <div>
-                <strong>
-                  {isCritical
-                    ? 'Critical vulnerabilities found — human review required'
-                    : isRisky
-                      ? 'This evaluation needs human verification'
-                      : 'This evaluation hasn\'t been human-verified yet'}
-                </strong>
-                <p class="attest-banner-sub">
-                  {isCritical
-                    ? `${failCount} check${failCount > 1 ? 's' : ''} failed. A human must review and attest these results before they can be trusted.`
-                    : 'Add a ZK proof-of-personhood to prove a real human reviewed this safety evaluation.'}
-                </p>
-              </div>
-            </div>
-            <a href={`/verify/${scan.id}`} class={`btn ${isCritical ? 'btn-danger' : 'btn-primary'}`}>
-              🔐 Verify as Human
-            </a>
-          </div>
-        </div>
-      </div>
-    )}
 
     <section class="page-header">
       <div class="container">
@@ -243,12 +213,6 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
             </div>
           </div>
         )}
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <HumanBadge verified={scan.humanVerified} scanId={scan.id} />
       </div>
     </section>
 
@@ -442,19 +406,6 @@ export const ReportPage: FC<{ scan: ScanResult }> = ({ scan }) => {
         <a href="/scan" class="btn btn-primary" style="margin-left:1rem;">Run Another Scan</a>
       </div>
     </section>
-
-    {/* Bottom CTA for attestation */}
-    {!scan.humanVerified && (
-      <section class="section">
-        <div class="container container-sm center">
-          <div class="attest-cta-card">
-            <h3>🔐 Complete Human Attestation</h3>
-            <p class="text-muted">This report is unverified. Add your ZK proof-of-personhood to make it trustworthy.</p>
-            <a href={`/verify/${scan.id}`} class="btn btn-primary btn-lg">Verify as Human →</a>
-          </div>
-        </div>
-      </section>
-    )}
 
     <section class="section">
       <div class="container">

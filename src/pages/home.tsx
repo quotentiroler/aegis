@@ -2,10 +2,9 @@
 import type { FC } from 'hono/jsx';
 import { Layout } from '../components/layout';
 
-export const HomePage: FC<{ totalScans: number; threats: number; attestations: number }> = ({
+export const HomePage: FC<{ totalScans: number; threats: number }> = ({
   totalScans,
   threats,
-  attestations,
 }) => (
   <Layout>
     <section class="hero">
@@ -13,12 +12,11 @@ export const HomePage: FC<{ totalScans: number; threats: number; attestations: n
         <div class="hero-badge">🛡️ Research-Backed AI Safety</div>
         <h1 class="hero-title">
           AI Safety Evaluations,<br />
-          <span class="gradient-text">Verified by Humans</span>
+          <span class="gradient-text">Built on Research</span>
         </h1>
         <p class="hero-subtitle">
-          AEGIS detects prompt injection, jailbreaks, and evaluation gaming — then lets real humans
-          attest results with cryptographic proof-of-personhood via{' '}
-          <a href="https://human.tech" target="_blank" rel="noopener">human.tech</a>.
+          AEGIS detects prompt injection, jailbreaks, and evaluation gaming across multiple models
+          with research-backed probes and quantitative safety scores.
         </p>
         <div class="hero-actions">
           <a href="/scan" class="btn btn-primary btn-lg">Run Your First Scan →</a>
@@ -47,11 +45,11 @@ export const HomePage: FC<{ totalScans: number; threats: number; attestations: n
             </p>
           </div>
           <div class="card">
-            <div class="card-icon">👤</div>
-            <h3>Attest</h3>
+            <div class="card-icon">�</div>
+            <h3>Cite</h3>
             <p>
-              Every evaluation can be cryptographically attested by a verified human via ZK
-              proof-of-personhood — because <em>who watches the watchmen?</em>
+              Every probe traces to a peer-reviewed paper — UniGuardian, JailbreakBench, HarmBench,
+              Min-K%, and Constitutional AI.
             </p>
           </div>
         </div>
@@ -69,28 +67,9 @@ export const HomePage: FC<{ totalScans: number; threats: number; attestations: n
             <div class="stat-number">{threats}</div>
             <div class="stat-label">Threats Detected</div>
           </div>
-          <div class="stat">
-            <div class="stat-number">{attestations}</div>
-            <div class="stat-label">Human Attestations</div>
-          </div>
         </div>
       </div>
     </section>
 
-    <section class="cta-section">
-      <div class="container center">
-        <h2>Why Human Attestation Matters</h2>
-        <p class="text-muted">
-          If AI safety evaluations can be run <em>and faked</em> by AI, the evaluations themselves become
-          untrustworthy. AEGIS closes this loop: every audit is tied to a proven-human via
-          human.tech's ZK proofs. No biometrics shared. No identity revealed. Just cryptographic
-          proof that a real person was in the loop.
-        </p>
-        <blockquote class="quote">
-          "NIST AI RMF mandates human-in-the-loop as a critical governance mechanism for safety
-          testing pipelines. The EU AI Act requires human oversight for high-risk AI systems."
-        </blockquote>
-      </div>
-    </section>
   </Layout>
 );

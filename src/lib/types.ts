@@ -68,9 +68,6 @@ export interface ScanResult {
   results: CheckResult[];       // Primary model results (backward compat)
   modelResults?: ModelResult[]; // Per-model breakdown
   inputAnalysis?: InputAnalysis;
-  humanVerified: boolean;
-  humanProof?: string;
-  verifiedAt?: string;
   createdAt: string;
 }
 
@@ -84,9 +81,6 @@ export interface ScanRow {
   results: string;           // JSON
   model_results: string | null; // JSON
   input_analysis: string | null; // JSON
-  human_verified: number;
-  human_proof: string | null;
-  verified_at: string | null;
   created_at: string;
   ip_hash: string | null;
 }

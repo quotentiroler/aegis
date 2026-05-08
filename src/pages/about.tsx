@@ -8,7 +8,7 @@ export const AboutPage: FC = () => (
       <div class="container">
         <h1>AI Evaluation & Governance Integrity System</h1>
         <p class="text-muted">
-          Research-backed AI safety evaluations with human-verified attestations.
+          Research-backed AI safety evaluations across multiple LLMs.
         </p>
       </div>
     </section>
@@ -35,9 +35,9 @@ export const AboutPage: FC = () => (
           <div class="arch-row">
             <div class="arch-box">Dual scoring (Resilience + Prompt Strength)</div>
             <div class="arch-arrow">→</div>
-            <div class="arch-box highlight">human.tech ZK proof</div>
+            <div class="arch-box highlight">Comparative scorecard</div>
             <div class="arch-arrow">→</div>
-            <div class="arch-box">Attested report ✓</div>
+            <div class="arch-box">Auditable report ✓</div>
           </div>
         </div>
 
@@ -66,7 +66,6 @@ export const AboutPage: FC = () => (
           <li><strong>AI Providers:</strong> OpenAI SDK v6 + @huggingface/inference SDK</li>
           <li><strong>Judge Model:</strong> GPT-5.4 (LLM-as-judge for all verdicts)</li>
           <li><strong>Testing:</strong> Vitest 4.1 — 40 tests (unit + live integration)</li>
-          <li><strong>Attestation:</strong> human.tech ZK proof-of-personhood</li>
         </ul>
       </div>
     </section>
@@ -86,8 +85,7 @@ export const AboutPage: FC = () => (
           </p>
           <p class="text-sm text-muted" style="margin-top:0.6rem">
             Try <a href="https://gandalf.lakera.ai/" target="_blank" rel="noopener noreferrer">Gandalf by Lakera</a> to
-            experience prompt injection firsthand — AEGIS automates detection of these vulnerabilities
-            and pairs them with human-verified attestations.
+            experience prompt injection firsthand — AEGIS automates detection of these vulnerabilities.
           </p>
           <p class="ref">
             REF: Lin et al. (2025) "UniGuardian" — arXiv:2502.13141
@@ -147,40 +145,6 @@ export const AboutPage: FC = () => (
       </div>
     </section>
 
-    {/* Human Attestation */}
-    <section class="section">
-      <div class="container container-md">
-        <h2>Why Human Attestation?</h2>
-        <p>
-          If AI safety evaluations can be run <em>and faked</em> by AI, the evaluations themselves
-          become untrustworthy. AEGIS addresses this through cryptographic human attestation:
-        </p>
-        <ul class="spaced-list">
-          <li>
-            <strong>NIST AI RMF</strong> (NIST.AI.100-1) mandates human-in-the-loop as a critical
-            governance mechanism for safety testing pipelines.
-          </li>
-          <li>
-            <strong>EU AI Act</strong> (Art. 14) requires human oversight for high-risk AI systems,
-            including ability to override AI decisions.
-          </li>
-          <li>
-            <strong>HAT Framework</strong> (Human-in-the-loop Adversarial Testing) uses human feedback
-            to curate adversarial prompts that automated generators miss.
-          </li>
-          <li>
-            <strong>Constitutional AI</strong> (Bai et al., 2022 — arXiv:2212.08073) incorporates
-            human feedback to define safety boundaries.
-          </li>
-        </ul>
-        <p>
-          <strong>human.tech</strong> provides ZK proof-of-personhood — "Human Keys from Human Attributes."
-          Privacy is preserved: no biometrics are shared, no identity revealed. Just cryptographic
-          proof that a real person was in the loop.
-        </p>
-      </div>
-    </section>
-
     {/* Bibliography */}
     <section class="section alt-bg">
       <div class="container container-md">
@@ -207,13 +171,13 @@ export const AboutPage: FC = () => (
     {/* Credits */}
     <section class="section">
       <div class="container container-md center">
-        <h2>Built at Intelligence at the Frontier</h2>
+        <h2>Built with Intelligence at the Frontier</h2>
         <p class="text-muted">
-          Hackathon by Funding the Commons + Protocol Labs · March 15, 2026 · San Francisco
+          Funding the Commons + Protocol Labs · March 15, 2026 · San Francisco
         </p>
         <div class="logo-row">
           <span>🌐 Protocol Labs</span>
-          <span>🌸 human.tech</span>
+
           <span>💡 Funding the Commons</span>
         </div>
       </div>

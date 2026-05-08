@@ -3,12 +3,10 @@ import { Hono } from 'hono';
 import { HomePage } from './pages/home';
 import { ScanPage } from './pages/scan';
 import { ReportPage } from './pages/report';
-import { VerifyPage } from './pages/verify';
 import { DashboardPage } from './pages/dashboard';
 import { AboutPage } from './pages/about';
 import { runMultiModelChecks, analyzeInput } from './lib/safety-checks';
 import { calculateOverallScore } from './lib/scoring';
-import { generateDemoProof } from './lib/human-verify';
 import { globalErrorHandler, globalNotFoundHandler } from './lib/errors';
 import type { Category, ScanResult, ScanRow, AppEnv, InputAnalysis, ModelResult } from './lib/types';
 import { ALL_CATEGORIES, DEFAULT_MODEL_IDS, MODEL_MAP } from './lib/constants';
@@ -30,9 +28,6 @@ function rowToScan(row: ScanRow): ScanResult {
     results: JSON.parse(row.results),
     modelResults: row.model_results ? JSON.parse(row.model_results) as ModelResult[] : undefined,
     inputAnalysis: row.input_analysis ? JSON.parse(row.input_analysis) as InputAnalysis : undefined,
-    humanVerified: row.human_verified === 1,
-    humanProof: row.human_proof ?? undefined,
-    verifiedAt: row.verified_at ?? undefined,
     createdAt: row.created_at,
   };
 }
@@ -43,16 +38,14 @@ app.get('/', async (c) => {
   const stats = await c.env.DB.prepare(
     `SELECT
        COUNT(*) as total,
-       SUM(CASE WHEN overall_score < 60 THEN 1 ELSE 0 END) as threats,
-       SUM(human_verified) as verified
+       SUM(CASE WHEN overall_score < 60 THEN 1 ELSE 0 END) as threats
      FROM scans`,
-  ).first<{ total: number; threats: number; verified: number }>();
+  ).first<{ total: number; threats: number }>();
 
   return c.html(
     <HomePage
       totalScans={stats?.total ?? 0}
       threats={stats?.threats ?? 0}
-      attestations={stats?.verified ?? 0}
     />,
   );
 });
@@ -66,20 +59,12 @@ app.get('/report/:id', async (c) => {
   return c.html(<ReportPage scan={rowToScan(row)} />);
 });
 
-app.get('/verify/:id', async (c) => {
-  const id = c.req.param('id');
-  const row = await c.env.DB.prepare('SELECT * FROM scans WHERE id = ?').bind(id).first<ScanRow>();
-  if (!row) return c.text('Scan not found', 404);
-  return c.html(<VerifyPage scan={rowToScan(row)} />);
-});
-
 app.get('/dashboard', async (c) => {
   const rows = await c.env.DB.prepare('SELECT * FROM scans ORDER BY created_at DESC LIMIT 50').all<ScanRow>();
   const scans = (rows.results ?? []).map(rowToScan);
   const total = scans.length;
   const avg = total > 0 ? Math.round(scans.reduce((s, r) => s + r.overallScore, 0) / total) : 0;
-  const verified = scans.filter((s) => s.humanVerified).length;
-  return c.html(<DashboardPage scans={scans} stats={{ avg, verified, total }} />);
+  return c.html(<DashboardPage scans={scans} stats={{ avg, total }} />);
 });
 
 app.get('/about', (c) => c.html(<AboutPage />));
@@ -157,8 +142,7 @@ app.post('/api/scan', async (c) => {
       )
       .run();
 
-    // Auto-redirect to verify page for critical/risky scans (<60) to nudge attestation
-    const destination = overallScore < 60 ? `/verify/${id}` : `/report/${id}`;
+    const destination = `/report/${id}`;
     const wantsJson = (c.req.header('accept') ?? '').includes('application/json');
     if (wantsJson) {
       return c.json({ id, redirectUrl: destination, overallScore });
@@ -169,23 +153,6 @@ app.post('/api/scan', async (c) => {
     console.error('Scan error:', msg);
     return c.text(`Scan failed: ${msg}`, 500);
   }
-});
-
-app.post('/api/verify/:id', async (c) => {
-  const id = c.req.param('id');
-  const row = await c.env.DB.prepare('SELECT * FROM scans WHERE id = ?').bind(id).first<ScanRow>();
-  if (!row) return c.text('Scan not found', 404);
-
-  const proof = generateDemoProof(id);
-  const now = new Date().toISOString();
-
-  await c.env.DB.prepare(
-    'UPDATE scans SET human_verified = 1, human_proof = ?, verified_at = ? WHERE id = ?',
-  )
-    .bind(proof, now, id)
-    .run();
-
-  return c.redirect(`/verify/${id}`);
 });
 
 app.get('/api/report/:id/json', async (c) => {

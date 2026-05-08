@@ -7,12 +7,8 @@ CREATE TABLE IF NOT EXISTS scans (
   results TEXT NOT NULL,
   model_results TEXT,
   input_analysis TEXT,
-  human_verified INTEGER DEFAULT 0,
-  human_proof TEXT,
-  verified_at TEXT,
   created_at TEXT DEFAULT (datetime('now')),
   ip_hash TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_scans_created ON scans(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_scans_verified ON scans(human_verified);

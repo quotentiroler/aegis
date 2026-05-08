@@ -6,7 +6,6 @@ import { getScoreColor, getScoreLabel, CATEGORY_LABELS, CATEGORY_ICONS, SEVERITY
 
 interface DashboardStats {
   avg: number;
-  verified: number;
   total: number;
 }
 
@@ -50,7 +49,7 @@ const EmptyDashboard: FC = () => (
         <div style="font-size:3rem;margin-bottom:1rem;">🔍</div>
         <h1 style="margin-bottom:0.5rem;">No scans yet</h1>
         <p class="text-muted" style="margin-bottom:2rem;font-size:1.1rem;">
-          Run your first safety evaluation to see real-time insights here — score breakdowns, threat severity, category analysis, and attestation tracking.
+          Run your first safety evaluation to see real-time insights here — score breakdowns, threat severity, and category analysis.
         </p>
         <a href="/scan" class="btn btn-primary btn-lg">Run Your First Scan →</a>
       </div>
@@ -64,7 +63,6 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
   const catBreakdown = computeCategoryBreakdown(scans);
   const severity = computeSeverityDistribution(scans);
   const buckets = computeScoreBuckets(scans);
-  const attestRate = stats.total > 0 ? Math.round((stats.verified / stats.total) * 100) : 0;
   const totalFindings = Object.values(severity).reduce((a, b) => a + b, 0);
 
   return (
@@ -72,7 +70,7 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
       {/* KPI strip */}
       <section class="section" style="padding-bottom:0;">
         <div class="container">
-          <div class="grid-4">
+          <div class="grid-3">
             <div class="stat">
               <div class="stat-number">{stats.total}</div>
               <div class="stat-label">Total Scans</div>
@@ -84,10 +82,6 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
             <div class="stat">
               <div class="stat-number">{totalFindings}</div>
               <div class="stat-label">Findings</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number">{attestRate}%</div>
-              <div class="stat-label">Attestation Rate</div>
             </div>
           </div>
         </div>
@@ -187,7 +181,7 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
                   <th>Score</th>
                   <th>Rating</th>
                   <th>Checks</th>
-                  <th>Attested</th>
+                  <th>Actions</th>
                   <th></th>
                 </tr>
               </thead>
@@ -259,7 +253,6 @@ export const DashboardPage: FC<{ scans: ScanResult[]; stats: DashboardStats }> =
                           <span>{s.results.length - failed}/{s.results.length} passed</span>
                         )}
                       </td>
-                      <td>{s.humanVerified ? <span style="color:#22c55e;">✓ Yes</span> : <span class="text-muted">—</span>}</td>
                       <td>
                         <a href={`/report/${s.id}`} class="btn btn-sm">View →</a>
                       </td>

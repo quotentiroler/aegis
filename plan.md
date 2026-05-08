@@ -1,6 +1,6 @@
 # AEGIS — AI Evaluation & Governance Integrity System
 
-> **Hackathon**: Intelligence at the Frontier (Funding the Commons + Protocol Labs)
+> **Event**: Intelligence at the Frontier (Funding the Commons + Protocol Labs)
 > **Date**: March 15, 2026
 > **Tracks**: 🛡️ AI Safety & Evaluation (Protocol Labs) + 🌸 BONUS: Made by Human (human.tech)
 > **Live**: [aegis.maxivities.workers.dev](https://aegis.maxivities.workers.dev/)
