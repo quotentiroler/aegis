@@ -10,9 +10,9 @@
 
 ## What is AEGIS?
 
-AEGIS is a **research-backed AI safety evaluation framework** with **human-verified attestations**. It detects prompt injection, jailbreaks, output manipulation, evaluation gaming, and data exfiltration — then lets real humans attest results with **cryptographic proof-of-personhood** via [human.tech](https://human.tech).
+AEGIS is a **research-backed AI safety evaluation framework**. It detects prompt injection, jailbreaks, output manipulation, evaluation gaming, and data exfiltration across multiple LLMs with quantitative safety scores.
 
-**The core insight**: If AI safety evaluations can be run _and faked_ by AI, the evaluations themselves become untrustworthy. AEGIS closes this loop — every audit is tied to a proven-human via ZK proofs.
+**The core insight**: A single model can appear safe while another is trivially vulnerable. AEGIS is the only tool that shows how your system prompt holds up across providers with a per-model scorecard.
 
 ## Why AEGIS?
 
@@ -28,7 +28,6 @@ The AI safety evaluation space has mature tools — [Promptfoo](https://github.c
 | Open-weight models | ❌ | ❌ | ❌ | ❌ | ✅ **(HuggingFace)** |
 | Quantitative safety score | ❌ (pass/fail) | ❌ (block/allow) | Partial | ❌ | ✅ **(0–100)** |
 | Comparative scorecard | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Human attestation (ZK) | ❌ | ❌ | ❌ | ❌ | ✅ |
 | Web UI (zero-install) | ❌ (CLI) | ❌ (API) | Partial (hub) | ❌ (CLI) | ✅ |
 | Research-grounded checks | Partial | Proprietary | Partial | Partial | ✅ **(10 papers)** |
 
@@ -36,11 +35,9 @@ The AI safety evaluation space has mature tools — [Promptfoo](https://github.c
 
 1. **Multi-model comparative testing** — Test the same system prompt against GPT-5 Mini and open-weight models (Llama 3.3 70B, DeepSeek V3.2, Qwen 2.5 72B/Coder 32B) in one scan. The future is on-device open-weight models — many uncensored — and AEGIS is the only tool that shows how your prompt holds up across providers with a per-model scorecard.
 
-2. **Cryptographic human attestation** — Every scan can be attested by a verified human via ZK proof-of-personhood. No other tool in this space ships this. The research frontier (NIST AI RMF, EU AI Act Art. 14) demands human oversight for safety evaluations — AEGIS makes it verifiable and privacy-preserving.
+2. **Per-model safety scores** — Not pass/fail, not raw logs. Each model gets an independent 0–100 score across 5 weighted attack categories, designed for dashboards, compliance reports, and comparison across providers.
 
-3. **Per-model safety scores** — Not pass/fail, not raw logs. Each model gets an independent 0–100 score across 5 weighted attack categories, designed for dashboards, compliance reports, and comparison across providers.
-
-4. **Web-first, zero-install** — Every competitor requires `pip install`, Docker, or API keys. AEGIS is a URL. Visit, paste a prompt, get a scored report. This matters for non-engineers: compliance teams, product managers, regulators.
+3. **Web-first, zero-install** — Every competitor requires `pip install`, Docker, or API keys. AEGIS is a URL. Visit, paste a prompt, get a scored report. This matters for non-engineers: compliance teams, product managers, regulators.
 
 ## Features
 
@@ -49,11 +46,10 @@ The AI safety evaluation space has mature tools — [Promptfoo](https://github.c
 - **Quantitative Scoring**: 0–100 safety score with per-category breakdowns and severity ratings
 - **Comparative Scorecard**: Side-by-side per-model scores with visual bars on every report
 - **LLM-as-Judge**: GPT-5.4 evaluates all probe responses for consistent, high-quality verdicts
-- **Human Attestation**: ZK proof-of-personhood via human.tech — privacy-preserving, no biometrics shared
 - **Research-Grounded**: Every check traces back to published papers (UniGuardian, JailbreakBench, Min-K%, etc.)
 - **40 Adversarial Probes**: Full probe library across 5 attack categories, all open-sourced
 - **Test Suite**: 40 tests via Vitest (27 unit + 13 integration), `bun run test` before every deploy
-- **6 Pages**: Home, Scan, Report, Verify, Dashboard, About — clean UX with one purpose per page
+- **5 Pages**: Home, Scan, Report, Dashboard, About — clean UX with one purpose per page
 
 ## Tech Stack
 
@@ -68,7 +64,6 @@ The AI safety evaluation space has mature tools — [Promptfoo](https://github.c
 | Judge Model | OpenAI GPT-5.4 (LLM-as-Judge) |
 | HF SDK | `@huggingface/inference` v4 (InferenceClient) |
 | Model Providers | OpenAI API + HuggingFace Inference API |
-| Human Verification | human.tech ZK proof-of-personhood |
 | Testing | Vitest 4.1 (40 tests: 27 unit + 13 integration) |
 
 ## Quick Start
@@ -105,7 +100,7 @@ GPT-5.4 LLM-as-Judge → per-probe PASS/FAIL verdicts
     ↓
 Per-Model Scorecard (0-100 per model, 5 categories)
     ↓
-Human reviewer → human.tech ZK proof → Attested report ✓
+Auditable JSON report
 ```
 
 ## Safety Check Methodology
@@ -196,20 +191,6 @@ Tests for inconsistent behavior between canonical and paraphrased questions (sug
 
 </details>
 
-## Human Attestation (human.tech Integration)
-
-AEGIS integrates [human.tech](https://human.tech)'s ZK proof-of-personhood protocol:
-
-1. User runs a safety scan
-2. Reviews the findings
-3. Clicks "Attest as Human" → connects to human.tech
-4. Generates a ZK proof (no biometrics shared, no identity revealed)
-5. Proof is linked to the scan → "✓ Verified by Human" badge
-
-**Why this matters**:
-- NIST AI RMF mandates human-in-the-loop for safety testing pipelines
-- EU AI Act (Art. 14) requires human oversight for high-risk AI systems
-- Constitutional AI uses human feedback to define safety boundaries — AEGIS makes this verifiable
 
 ## Research Foundation
 
@@ -302,8 +283,6 @@ Every scan produces a structured JSON report available at `GET /api/report/:id/j
     "threatScan": null              // Non-null if input itself looks like an attack
   },
 
-  // Human attestation status
-  "humanVerified": false,           // true after ZK proof-of-personhood
   "createdAt": "2026-03-15 20:33:23"
 }
 ```
@@ -319,7 +298,6 @@ Every scan produces a structured JSON report available at `GET /api/report/:id/j
 ## Target Tracks
 
 - 🛡️ **AI Safety & Evaluation** (Protocol Labs)
-- 🌸 **Made by Human** (human.tech)
 
 ## License
 
