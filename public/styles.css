@@ -195,7 +195,6 @@ textarea:focus { outline: none; border-color: var(--text-muted); }
 .arch-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem 1.2rem; font-size: 0.9rem; text-align: center; }
 .arch-box.highlight { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.2); color: var(--accent); font-weight: 600; }
 .arch-arrow { color: var(--text-muted); font-size: 1.2rem; }
-.logo-row { display: flex; gap: 2rem; justify-content: center; margin-top: 1rem; font-size: 1rem; color: var(--text-muted); }
 
 /* Footer */
 .footer { margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); text-align: center; }

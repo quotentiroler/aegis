@@ -168,19 +168,5 @@ export const AboutPage: FC = () => (
       </div>
     </section>
 
-    {/* Credits */}
-    <section class="section">
-      <div class="container container-md center">
-        <h2>Built with Intelligence at the Frontier</h2>
-        <p class="text-muted">
-          Funding the Commons + Protocol Labs · March 15, 2026 · San Francisco
-        </p>
-        <div class="logo-row">
-          <span>🌐 Protocol Labs</span>
-
-          <span>💡 Funding the Commons</span>
-        </div>
-      </div>
-    </section>
   </Layout>
 );

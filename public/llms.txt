@@ -51,4 +51,3 @@ Key information:
 
 - [API: Scan JSON](https://aegis.dev/api/report/:id/json): Machine-readable scan results
 - Built by: AEGIS team
-- Tracks targeted: AI Safety & Evaluation

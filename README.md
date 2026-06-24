@@ -4,8 +4,6 @@
 
 🔗 **Live Demo: [aegis.maxivities.workers.dev](https://aegis.maxivities.workers.dev/)**
 
-**Presented at [Intelligence at the Frontier](https://fundingthecommons.io/) — Funding the Commons + Protocol Labs — March 2026, San Francisco**
-
 ---
 
 ## What is AEGIS?
@@ -294,10 +292,6 @@ Every scan produces a structured JSON report available at `GET /api/report/:id/j
 - **Evidence is structured** — Each failed probe includes the attack prompt, the GPT-5.4 judge's reasoning, and a response snippet. Entries are separated by `---`.
 - **Prompt Strength is independent** — Measures the defensiveness of the system prompt itself (length, instruction patterns, safety keywords), not how models responded to attacks.
 - **All judge verdicts come from GPT-5.4** — A single, consistent judge model evaluates all probe responses across all target models, ensuring fair comparison.
-
-## Target Tracks
-
-- 🛡️ **AI Safety & Evaluation** (Protocol Labs)
 
 ## License
 
