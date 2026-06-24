@@ -1,21 +1,20 @@
 # AEGIS
 
-> AEGIS (AI Evaluation & Governance Integrity System) provides research-backed AI safety evaluations with cryptographic human attestation.
+> AEGIS (AI Evaluation & Governance Integrity System) provides research-backed AI safety evaluations with per-model scorecards across multiple LLMs.
 
 Key information:
 
 - AEGIS scans AI system prompts against multiple models for 5 categories of safety vulnerabilities
-- Tests across OpenAI GPT-5 Mini and open-weight models (Llama 3.1 8B, Mistral 7B, Qwen 2.5 72B, Phi-3 Mini) via HuggingFace Inference API
+- Tests across OpenAI GPT-5 Mini and open-weight models (Llama 3.3 70B, DeepSeek V3.2, Qwen 2.5 72B, Qwen 2.5 Coder 32B) via HuggingFace Inference API
 - GPT-5.4 serves as the LLM-as-Judge, evaluating all probe responses for consistent verdicts
 - Each scan produces a 0-100 safety score per model with a comparative scorecard
-- Human reviewers can attest results via zero-knowledge proof-of-personhood (human.tech)
-- All evaluations are transparent, auditable, and cryptographically verifiable
+- All evaluations are transparent and auditable
 
 ## Pages
 
 - [Homepage](https://aegis.dev): Overview, stats, and quick-start for running safety scans
 - [Scan](https://aegis.dev/scan): Submit a system prompt, select target models, and run automated safety evaluation
-- [Dashboard](https://aegis.dev/dashboard): View all scans, scores, and human attestation status
+- [Dashboard](https://aegis.dev/dashboard): View all scans and scores
 - [About](https://aegis.dev/about): Methodology, architecture, research references, and bibliography
 
 ## Safety Check Categories

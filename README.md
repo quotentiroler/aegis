@@ -1,6 +1,6 @@
 # 🛡️ AEGIS — AI Evaluation & Governance Integrity System
 
-> AI safety evaluations you can trust, because the humans behind them are verified.
+> Research-backed AI safety evaluations with per-model scorecards across multiple LLMs.
 
 🔗 **Live Demo: [aegis.maxivities.workers.dev](https://aegis.maxivities.workers.dev/)**
 
@@ -14,22 +14,9 @@ AEGIS is a **research-backed AI safety evaluation framework**. It detects prompt
 
 ## Why AEGIS?
 
-The AI safety evaluation space has mature tools — [Promptfoo](https://github.com/promptfoo/promptfoo) (16K+ ★), [Tencent AI-Infra-Guard](https://github.com/Tencent/AI-Infra-Guard) (3K+ ★), [Lakera Guard](https://lakera.ai), [Giskard](https://giskard.ai). So why build another one?
+Most AI safety tooling tests one model at a time and returns a pass/fail. AEGIS runs the same system prompt across multiple providers in a single scan and gives each model an independent, quantitative score — so you can see exactly where your prompt holds up and where it breaks.
 
-**Because none of them answer the question: _who ran the evaluation?_**
-
-| | Promptfoo | Lakera | Giskard | AI-Infra-Guard | **AEGIS** |
-|---|---|---|---|---|---|
-| Prompt injection detection | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Jailbreak testing | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Multi-model testing | ❌ | ❌ | ❌ | ❌ | ✅ **(5 models)** |
-| Open-weight models | ❌ | ❌ | ❌ | ❌ | ✅ **(HuggingFace)** |
-| Quantitative safety score | ❌ (pass/fail) | ❌ (block/allow) | Partial | ❌ | ✅ **(0–100)** |
-| Comparative scorecard | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Web UI (zero-install) | ❌ (CLI) | ❌ (API) | Partial (hub) | ❌ (CLI) | ✅ |
-| Research-grounded checks | Partial | Proprietary | Partial | Partial | ✅ **(10 papers)** |
-
-### The Gap We Fill
+### What Sets It Apart
 
 1. **Multi-model comparative testing** — Test the same system prompt against GPT-5 Mini and open-weight models (Llama 3.3 70B, DeepSeek V3.2, Qwen 2.5 72B/Coder 32B) in one scan. The future is on-device open-weight models — many uncensored — and AEGIS is the only tool that shows how your prompt holds up across providers with a per-model scorecard.
 

@@ -2,7 +2,7 @@ import type { Category, Severity, ModelConfig } from './types';
 
 export const APP_NAME = 'AEGIS';
 export const APP_TAGLINE = 'AI Evaluation & Governance Integrity System';
-export const APP_DESCRIPTION = 'AI safety evaluations you can trust, because the humans behind them are verified.';
+export const APP_DESCRIPTION = 'Research-backed AI safety evaluations with per-model scorecards across multiple LLMs.';
 
 // --- Single source of truth for categories ---
 export const ALL_CATEGORIES: Category[] = [

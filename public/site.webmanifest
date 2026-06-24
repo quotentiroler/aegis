@@ -1,7 +1,7 @@
 {
   "name": "AEGIS — AI Evaluation & Governance Integrity System",
   "short_name": "AEGIS",
-  "description": "AI safety evaluations you can trust, because the humans behind them are verified.",
+  "description": "Research-backed AI safety evaluations with per-model scorecards across multiple LLMs.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
